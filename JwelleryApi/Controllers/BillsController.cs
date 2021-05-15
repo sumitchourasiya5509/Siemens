@@ -18,8 +18,9 @@ namespace JwelleryApi.Controllers
         {
             _bill = bill;
         }
-        [HttpGet]
-        public IActionResult Get([FromBody] GoldBill bill)
+     
+        [HttpPost("GetBill")]
+        public IActionResult GetBill([FromBody]GoldBill bill)
         {
             bill = _bill.CalculateBill(bill);
             return Ok(bill);

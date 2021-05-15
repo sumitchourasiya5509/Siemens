@@ -23,11 +23,8 @@ namespace JwelleryApi
         {
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("*");
-                    });
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin());
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(databaseName: "Jwellery"));
@@ -46,10 +43,15 @@ namespace JwelleryApi
             {
                 app.UseHsts();
             }
-
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
             app.UseHttpsRedirection();
             app.UseMvcWithDefaultRoute();
-            app.UseCors();
+            
         }
     }
 }
